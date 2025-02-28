@@ -1,62 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'hello_screen.dart';
+import 'profile_page.dart';
+import 'upload_page.dart';
+import 'svg_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+
+  final List<Widget> _pages = [
+    MainScreen(),
+    NGOPage(),
+    UploadPage(),
+    ProfilePage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 20),
-            Text(
-              'Welcome to the App!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                children: [
-                  _buildCard(context, 'Profile', Icons.person, '/profile'),
-                  _buildCard(context, 'Search', Icons.search, '/search'),
-                  _buildCard(context, 'Add Post', Icons.add, '/addPost'),
-                  _buildCard(context, 'Settings', Icons.settings, '/settings'),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCard(BuildContext context, String title, IconData icon, String route) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, route);
-      },
-      child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 40, color: Colors.blueAccent),
-            SizedBox(height: 10),
-            Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          ],
-        ),
+      body: _pages[_currentIndex],
+      bottomNavigationBar: CurvedNavigationBar(
+        index: _currentIndex,
+        height: 60.0,
+        backgroundColor: Colors.white,
+      color: Color(0xFF004953),
+        animationDuration: Duration(milliseconds: 300),
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: [
+          Icon(Icons.home, size: 30, color: Colors.white),
+          Icon(Icons.help, size: 30, color: Colors.white),
+          Icon(Icons.upload, size: 30, color: Colors.white),
+          Icon(Icons.person, size: 30, color: Colors.white),
+        ],
       ),
     );
   }
